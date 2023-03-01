@@ -44,9 +44,12 @@ func (s *Server) createShoppingItem() http.HandlerFunc {
 		}
 	}
 }
-func (s *Server) listShoppingItems() http.HandlerFunc{
-	return func(w http.ResponseWriter, r *http.Request){
+func (s *Server) listShoppingItems() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		if err := json.NewEncoder(w).Encode(s.shoppingItems)
+		if err := json.NewEncoder(w).Encode(s.shoppingItems); err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 }
