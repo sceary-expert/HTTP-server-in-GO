@@ -24,10 +24,15 @@ func NewServer() *Server {
 		Router:        mux.NewRouter(),
 		shoppingItems: []Item{},
 	}
-
+	s.routes()
 	return s
 }
+func (s *Server) routes() {
+	s.HandleFunc("/shopping-items", s.listShoppingItems()).Methods("GET")
+	s.HandleFunc("/shopping-items", s.listShoppingItems()).Methods("POST")
+	s.HandleFunc("/shopping-items/{id}", s.listShoppingItems()).Methods("DELETE")
 
+}
 func (s *Server) createShoppingItem() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var i Item
